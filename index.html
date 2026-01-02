@@ -230,9 +230,7 @@ body.fake-fullscreen #btnMobileMenu{
     align-items:flex-end;
   }
 
-  /* iOS FULLSCREEN TAB
-     - bigger buttons, but speed icon kept small like normal mobile
-  */
+  /* iOS FULLSCREEN TAB */
   body.ios-fullscreen{
     --btn-size:57px;
   }
@@ -242,7 +240,6 @@ body.fake-fullscreen #btnMobileMenu{
     height:27px;
   }
 
-  /* KEY CHANGE: fullscreen speed icon back to small size */
   body.ios-fullscreen #iconSpeed{
     width:17px !important;
     height:17px !important;
@@ -274,9 +271,7 @@ body.fake-fullscreen #btnMobileMenu{
 <body>
 <div id="map"></div>
 
-<!-- LEFT SIDE: play / restart / reset / camera -->
 <div class="ui ui-left">
-
   <button id="btnToggle" class="btn">
     <svg id="iconPlay" class="active" viewBox="0 0 24 24">
       <polygon transform="translate(1,0)" points="5,3 19,12 5,21"></polygon>
@@ -341,9 +336,7 @@ body.fake-fullscreen #btnMobileMenu{
   </button>
 </div>
 
-<!-- RIGHT SIDE: fullscreen / zoom / layers / speed -->
 <div class="ui ui-right">
-
   <button id="btnFull" class="btn">
     <svg id="iconFull" class="active" viewBox="0 0 24 24">
       <polyline points="4,9 4,4 9,4" fill="none" stroke="#fff" stroke-width="2"
@@ -392,7 +385,6 @@ body.fake-fullscreen #btnMobileMenu{
   </div>
 </div>
 
-<!-- MOBILE MENU BUTTON -->
 <button id="btnMobileMenu" class="btn mobile-menu-btn">
   <svg id="iconMobileMenu" class="active" viewBox="0 0 24 24">
     <circle cx="6" cy="12" r="2"></circle>
@@ -408,10 +400,9 @@ body.fake-fullscreen #btnMobileMenu{
 <script>
 mapboxgl.accessToken="pk.eyJ1IjoicmVtbWlhZ2JlYmkiLCJhIjoiY21odHRrYTQzMTk0bjJqcjE1b2xhZ2FraSJ9.nTCz33gX0gQt3T4A6VD0oQ";
 
-/* ONLY CHANGES: redirect to your new repo + filenames from the screenshot */
-const GPX_URL="https://raw.githubusercontent.com/remmiagbebi-beep/aberglaslyn-llyn-dinas-flyover/main/Aberglaslyn%2C%20Llyn%20Dinas%20%26%20Beddgelert.gpx";
+/* redirect only */
+const GPX_URL="https://raw.githubusercontent.com/remmiagbebi-beep/aberglaslyn-llyn-dinas-flyover/main/Aberglaslyn,%20Llyn%20Dinas%20%26%20Beddgelert.gpx";
 
-/* Issue 2: flip camera so it is behind the walker looking forwards */
 const BEARING_OFFSET_DEG = 180;
 
 const START_ZOOM=15.7,
@@ -443,7 +434,7 @@ function normBearing(b){
   return x;
 }
 
-/* FAST FORWARD ICON (redirected repo) */
+/* FAST FORWARD ICON (redirect only) */
 (async()=>{
   try{
     const r=await fetch("https://raw.githubusercontent.com/remmiagbebi-beep/aberglaslyn-llyn-dinas-flyover/main/icons/fast-forward.svg");
@@ -460,7 +451,7 @@ function normBearing(b){
   }catch(e){}
 })();
 
-/* LAYERS ICON (redirected repo) */
+/* LAYERS ICON (redirect only) */
 (async()=>{
   try{
     const r=await fetch("https://raw.githubusercontent.com/remmiagbebi-beep/aberglaslyn-llyn-dinas-flyover/main/icons/layers.svg");
@@ -499,7 +490,7 @@ async function addArrow(){
   ctx.lineWidth=3;
   ctx.stroke();
   ctx.fill();
-  map.addImage(await createImageBitmap(c), "arrow", { pixelRatio:2 });
+  map.addImage("arrow",await createImageBitmap(c),{pixelRatio:2});
 }
 
 function camIcons(){
@@ -522,7 +513,6 @@ function isIOS(){
   return iOS || iPadOS;
 }
 
-/* Detect iOS fullscreen tab via ?fs=1 and set class */
 (function(){
   const params = new URLSearchParams(window.location.search);
   if(isIOS() && params.get("fs") === "1"){
@@ -532,7 +522,6 @@ function isIOS(){
   }
 })();
 
-/* Issue 1: load GPX first, then create map centred on this route */
 (async()=>{
   const gpxText = await fetchText(GPX_URL);
   const line = parseGpx(gpxText);
@@ -563,7 +552,6 @@ function isIOS(){
     attributionControl:false
   });
 
-  /* user override detection needs map instance */
   ["mousedown","touchstart","dragstart","rotatestart","zoomstart","pitchstart"].forEach(ev=>{
     map.on(ev,e=>{
       if(!e.originalEvent) return;
@@ -838,8 +826,6 @@ function tick(ts){
   requestAnimationFrame(tick);
 }
 
-/* MOBILE MENU TOGGLE – Layers + Speed in vertical stack on mobile,
-   menu stays separate in bottom right */
 (function(){
   const btnMobileMenu = document.getElementById("btnMobileMenu");
   const uiLeft = document.querySelector(".ui-left");
