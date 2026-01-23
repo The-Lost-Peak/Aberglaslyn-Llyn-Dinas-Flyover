@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Snowdon Via The Llanberis Path 3D Flyover</title>
+<title>Aberglaslyn, Llyn Dinas & Beddgelert Flyover</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet" />
 
@@ -125,6 +125,16 @@ html,body{
 .mapboxgl-ctrl-bottom-left,
 .mapboxgl-ctrl-bottom-right{
   display:none !important;
+}
+
+/* Hide Mapbox canvas attribution safety net */
+#map canvas + .mapboxgl-ctrl-bottom-right,
+#map .mapboxgl-ctrl-bottom-right,
+#map .mapboxgl-ctrl-bottom-left{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
 }
 
 /* Fake fullscreen hook (desktop / android) */
@@ -555,6 +565,10 @@ function isIOS(){
     antialias:true,
     attributionControl:false
   });
+
+  if(map.getCanvas && map.getCanvas().setAttribute){
+    map.getCanvas().setAttribute("aria-label","");
+  }
 
   ["mousedown","touchstart","dragstart","rotatestart","zoomstart","pitchstart"].forEach(ev=>{
     map.on(ev,e=>{
